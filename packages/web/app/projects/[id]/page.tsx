@@ -1,11 +1,15 @@
 import { prisma } from '@/lib/prisma';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { severityColor, statusBadge } from '@/lib/utils';
 import type { ScanResult, ComplianceIssue, DetectedModel } from '@modelguard/shared';
 
-async function getProject(id: string) {
-  const project = await prisma.project.findUnique({
-    where: { id },
+export const dynamic = 'force-dynamic';
+
+async function getProject(id: string, userId: string) {
+  const project = await prisma.project.findFirst({
+    where: { id, userId },
     include: {
       scans: {
         orderBy: { createdAt: 'desc' },
@@ -21,7 +25,10 @@ export default async function ProjectDetailPage({
 }: {
   params: { id: string };
 }) {
-  const project = await getProject(params.id);
+  const session = await getServerSession(authOptions);
+  if (!session?.user) redirect('/auth/signin');
+  const userId = (session.user as Record<string, unknown>).id as string;
+  const project = await getProject(params.id, userId);
   if (!project) notFound();
 
   const latestScan = project.scans[0];

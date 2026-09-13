@@ -33,13 +33,30 @@ program
   .option('--fail-on <level>', 'Exit with code 1 on: error, warning', 'error')
   .option('--quiet', 'Suppress spinner and non-essential output')
   .action(async (directory: string, options: Record<string, unknown>) => {
+    const validUseCases = ['commercial', 'saas', 'medical', 'research', 'education', 'government'];
+    const validFormats = ['json', 'table', 'sarif', 'markdown'];
+    const validFailOn = ['error', 'warning'];
+
+    if (!validUseCases.includes(options.useCase as string)) {
+      console.error(chalk.red(`Invalid --use-case: "${options.useCase}". Must be one of: ${validUseCases.join(', ')}`));
+      process.exit(2);
+    }
+    if (!validFormats.includes(options.format as string)) {
+      console.error(chalk.red(`Invalid --format: "${options.format}". Must be one of: ${validFormats.join(', ')}`));
+      process.exit(2);
+    }
+    if (!validFailOn.includes(options.failOn as string)) {
+      console.error(chalk.red(`Invalid --fail-on: "${options.failOn}". Must be one of: ${validFailOn.join(', ')}`));
+      process.exit(2);
+    }
+
     const config: ScanConfig = {
       useCase: options.useCase as UseCase,
       mau: options.mau as number | undefined,
       productName: options.productName as string | undefined,
       outputFormat: options.format as OutputFormat,
       directory,
-      failOn: (options.failOn as 'error' | 'warning') ?? 'error',
+      failOn: options.failOn as 'error' | 'warning',
     };
 
     const quiet = Boolean(options.quiet);
@@ -53,8 +70,13 @@ program
 
       if (spinner) spinner.stop();
 
-      const modelsWithIssues = new Set(issues.filter(i => i.severity === 'error').map(i => i.modelId));
-      const modelsWithWarnings = new Set(issues.filter(i => i.severity === 'warning').map(i => i.modelId));
+      const modelsWithErrors = new Set(issues.filter(i => i.severity === 'error').map(i => i.modelId));
+      const modelsWithWarningsOnly = new Set(
+        issues.filter(i => i.severity === 'warning').map(i => i.modelId)
+      );
+      for (const id of modelsWithErrors) {
+        modelsWithWarningsOnly.delete(id);
+      }
 
       const result: ScanResult = {
         timestamp: new Date().toISOString(),
@@ -64,9 +86,9 @@ program
         issues,
         summary: {
           totalModels: models.length,
-          compliant: models.length - modelsWithIssues.size - modelsWithWarnings.size,
-          warnings: modelsWithWarnings.size,
-          violations: modelsWithIssues.size,
+          compliant: models.length - modelsWithErrors.size - modelsWithWarningsOnly.size,
+          warnings: modelsWithWarningsOnly.size,
+          violations: modelsWithErrors.size,
         },
       };
 

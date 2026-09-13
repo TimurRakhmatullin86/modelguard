@@ -12,8 +12,11 @@ export function getLicenseById(id: string): LicenseDefinition | undefined {
 export function getLicenseForModel(modelId: string): LicenseDefinition | undefined {
   return licenses.find(l =>
     l.models.some(pattern => {
-      const regex = new RegExp('^' + pattern.replace(/\*/g, '.*') + '$');
-      return regex.test(modelId);
+      const regexStr = pattern
+        .split('*')
+        .map(segment => segment.replace(/[.+?^${}()|[\]\\]/g, '\\$&'))
+        .join('.*');
+      return new RegExp('^' + regexStr + '$').test(modelId);
     })
   );
 }

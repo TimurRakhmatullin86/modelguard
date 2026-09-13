@@ -114,11 +114,20 @@ export const SCAN_PATTERNS: ScanPattern[] = [
     confidence: 'medium',
   },
   {
-    name: 'Ollama config',
-    filePatterns: ['**/Modelfile', '**/ollama*.yaml', '**/ollama*.yml', '**/ollama*.json', '**/*.py', '**/*.ts', '**/*.js'],
+    name: 'Ollama Modelfile',
+    filePatterns: ['**/Modelfile', '**/ollama*.yaml', '**/ollama*.yml', '**/ollama*.json'],
     contentPatterns: [
-      /(?:FROM|model)\s+([a-zA-Z0-9_-]+(?::[a-zA-Z0-9._-]+)?)/g,
-      /ollama\.(?:chat|generate|pull)\(\s*(?:model\s*[:=]\s*)?['"`]([a-zA-Z0-9_/:.-]+)['"`]/g,
+      /(?:FROM|model)\s+([\w][\w.:-]+)/g,
+    ],
+    extractModelId: (m) => m[1],
+    source: 'ollama_config',
+    confidence: 'high',
+  },
+  {
+    name: 'Ollama API calls',
+    filePatterns: ['**/*.py', '**/*.ts', '**/*.js', '**/*.mjs', '**/*.jsx', '**/*.tsx'],
+    contentPatterns: [
+      /ollama\.(?:chat|generate|pull|embeddings)\(\s*(?:model\s*[:=]\s*)?['"`]([a-zA-Z0-9_/:.-]+)['"`]/g,
     ],
     extractModelId: (m) => m[1],
     source: 'ollama_config',

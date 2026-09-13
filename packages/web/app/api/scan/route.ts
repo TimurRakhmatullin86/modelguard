@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import type { Prisma } from '@prisma/client';
 import type { ScanResult } from '@modelguard/shared';
 
 export async function POST(request: NextRequest) {
@@ -53,8 +54,8 @@ export async function POST(request: NextRequest) {
     const scan = await prisma.scan.create({
       data: {
         projectId: project.id,
-        result: body as unknown as Record<string, unknown>,
-        summary: body.summary as unknown as Record<string, unknown>,
+        result: JSON.parse(JSON.stringify(body)) as Prisma.InputJsonValue,
+        summary: JSON.parse(JSON.stringify(body.summary)) as Prisma.InputJsonValue,
       },
     });
 

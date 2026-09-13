@@ -132,7 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: modelguard/scan@v1
+      - uses: TimurRakhmatullin86/modelguard/.github/actions/scan@main
         with:
           use-case: commercial
           mau: 500000

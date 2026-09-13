@@ -1,9 +1,15 @@
 import { prisma } from '@/lib/prisma';
 import { statusBadge } from '@/lib/utils';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 import type { ScanResult } from '@modelguard/shared';
 
-async function getProjects() {
+export const dynamic = 'force-dynamic';
+
+async function getProjects(userId: string) {
   return prisma.project.findMany({
+    where: { userId },
     include: {
       scans: {
         orderBy: { createdAt: 'desc' },
@@ -15,7 +21,10 @@ async function getProjects() {
 }
 
 export default async function DashboardPage() {
-  const projects = await getProjects();
+  const session = await getServerSession(authOptions);
+  if (!session?.user) redirect('/auth/signin');
+  const userId = (session.user as Record<string, unknown>).id as string;
+  const projects = await getProjects(userId);
 
   return (
     <div>
