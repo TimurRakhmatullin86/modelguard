@@ -1,0 +1,29 @@
+{
+  "name": "@modelguard/cli",
+  "version": "1.0.0",
+  "description": "CLI scanner for AI model license compliance auditing",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "modelguard": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelguard/shared": "1.0.0",
+    "chalk": "^4.1.2",
+    "commander": "^12.1.0",
+    "cli-table3": "^0.6.5",
+    "glob": "^10.4.0",
+    "ora": "^5.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
+  },
+  "keywords": ["ai", "model", "license", "compliance", "audit", "llama", "huggingface"],
+  "license": "MIT"
+}

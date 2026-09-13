@@ -1,0 +1,140 @@
+name: 'ModelGuard Scan'
+description: 'Scan your project for AI model license compliance issues'
+author: 'Timur Rakhmatullin'
+
+branding:
+  icon: 'shield'
+  color: 'blue'
+
+inputs:
+  use-case:
+    description: 'Use case: commercial, saas, medical, research, education, government'
+    required: false
+    default: 'commercial'
+  mau:
+    description: 'Monthly active users (for MAU limit checks)'
+    required: false
+  product-name:
+    description: 'Product name (for naming restriction checks)'
+    required: false
+  format:
+    description: 'Output format: json, table, sarif, markdown'
+    required: false
+    default: 'table'
+  fail-on:
+    description: 'Fail on: error, warning'
+    required: false
+    default: 'error'
+  directory:
+    description: 'Directory to scan (default: repository root)'
+    required: false
+    default: '.'
+  upload-sarif:
+    description: 'Upload SARIF results to GitHub Security tab'
+    required: false
+    default: 'true'
+  api-key:
+    description: 'ModelGuard API key for dashboard upload'
+    required: false
+  dashboard-url:
+    description: 'ModelGuard dashboard URL for result upload'
+    required: false
+
+outputs:
+  total-models:
+    description: 'Total number of AI models found'
+  violations:
+    description: 'Number of license violations'
+  warnings:
+    description: 'Number of license warnings'
+  result-file:
+    description: 'Path to the scan result file'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install ModelGuard CLI
+      shell: bash
+      run: npm install -g @modelguard/cli
+
+    - name: Run ModelGuard Scan
+      id: scan
+      shell: bash
+      run: |
+        ARGS="--use-case ${{ inputs.use-case }}"
+        ARGS="$ARGS --fail-on ${{ inputs.fail-on }}"
+
+        if [ -n "${{ inputs.mau }}" ]; then
+          ARGS="$ARGS --mau ${{ inputs.mau }}"
+        fi
+
+        if [ -n "${{ inputs.product-name }}" ]; then
+          ARGS="$ARGS --product-name '${{ inputs.product-name }}'"
+        fi
+
+        # Generate table output for PR comment
+        modelguard scan ${{ inputs.directory }} $ARGS --format table || true
+
+        # Generate JSON for parsing
+        modelguard scan ${{ inputs.directory }} $ARGS --format json --quiet > modelguard-result.json 2>/dev/null || true
+
+        # Extract summary
+        TOTAL=$(cat modelguard-result.json | python3 -c "import sys,json; print(json.load(sys.stdin)['summary']['totalModels'])" 2>/dev/null || echo "0")
+        VIOLATIONS=$(cat modelguard-result.json | python3 -c "import sys,json; print(json.load(sys.stdin)['summary']['violations'])" 2>/dev/null || echo "0")
+        WARNINGS=$(cat modelguard-result.json | python3 -c "import sys,json; print(json.load(sys.stdin)['summary']['warnings'])" 2>/dev/null || echo "0")
+
+        echo "total-models=$TOTAL" >> $GITHUB_OUTPUT
+        echo "violations=$VIOLATIONS" >> $GITHUB_OUTPUT
+        echo "warnings=$WARNINGS" >> $GITHUB_OUTPUT
+        echo "result-file=modelguard-result.json" >> $GITHUB_OUTPUT
+
+    - name: Generate SARIF Report
+      if: inputs.upload-sarif == 'true'
+      shell: bash
+      run: |
+        ARGS="--use-case ${{ inputs.use-case }} --quiet"
+        if [ -n "${{ inputs.mau }}" ]; then
+          ARGS="$ARGS --mau ${{ inputs.mau }}"
+        fi
+        modelguard scan ${{ inputs.directory }} $ARGS --format sarif > modelguard.sarif 2>/dev/null || true
+
+    - name: Upload SARIF to GitHub Security
+      if: inputs.upload-sarif == 'true' && github.event_name == 'push'
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: modelguard.sarif
+        category: modelguard
+      continue-on-error: true
+
+    - name: Upload to Dashboard
+      if: inputs.api-key != '' && inputs.dashboard-url != ''
+      shell: bash
+      run: |
+        curl -s -X POST "${{ inputs.dashboard-url }}/api/scan" \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${{ inputs.api-key }}" \
+          -d @modelguard-result.json || true
+
+    - name: Check Compliance
+      shell: bash
+      run: |
+        FAIL_ON="${{ inputs.fail-on }}"
+        VIOLATIONS=${{ steps.scan.outputs.violations }}
+        WARNINGS=${{ steps.scan.outputs.warnings }}
+
+        if [ "$FAIL_ON" = "error" ] && [ "$VIOLATIONS" -gt 0 ]; then
+          echo "::error::ModelGuard found $VIOLATIONS license violation(s)"
+          exit 1
+        fi
+
+        if [ "$FAIL_ON" = "warning" ] && [ $(($VIOLATIONS + $WARNINGS)) -gt 0 ]; then
+          echo "::error::ModelGuard found $VIOLATIONS violation(s) and $WARNINGS warning(s)"
+          exit 1
+        fi
+
+        echo "::notice::ModelGuard: All models are compliant"

@@ -1,0 +1,366 @@
+{
+  "licenses": [
+    {
+      "id": "apache-2.0",
+      "name": "Apache License 2.0",
+      "spdx": "Apache-2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0",
+      "commercial": true,
+      "commercial_conditions": [],
+      "restricted_uses": [],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "permissive",
+      "attribution_required": true,
+      "models": ["google/gemma-2-*-it", "mistralai/Mistral-*", "mistralai/Mixtral-*"],
+      "notes": "Permissive license. Must include license text and NOTICE file in distributions."
+    },
+    {
+      "id": "mit",
+      "name": "MIT License",
+      "spdx": "MIT",
+      "url": "https://opensource.org/licenses/MIT",
+      "commercial": true,
+      "commercial_conditions": [],
+      "restricted_uses": [],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "permissive",
+      "attribution_required": true,
+      "models": [],
+      "notes": "Very permissive. Must include copyright notice and license text."
+    },
+    {
+      "id": "bsd-3-clause",
+      "name": "BSD 3-Clause License",
+      "spdx": "BSD-3-Clause",
+      "url": "https://opensource.org/licenses/BSD-3-Clause",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "naming",
+          "restriction": "Cannot use contributor names to endorse/promote without permission"
+        }
+      ],
+      "restricted_uses": [],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "permissive",
+      "attribution_required": true,
+      "models": [],
+      "notes": "Permissive. No endorsement clause."
+    },
+    {
+      "id": "llama-community-v1",
+      "name": "Llama Community License Agreement",
+      "url": "https://ai.meta.com/llama/license/",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "mau_limit",
+          "value": 700000000,
+          "action": "requires_separate_license"
+        },
+        {
+          "type": "attribution",
+          "required": true,
+          "text": "Built with Meta Llama"
+        },
+        {
+          "type": "naming",
+          "restriction": "Cannot use 'Llama' in product name without written permission"
+        },
+        {
+          "type": "pass_through",
+          "required": true,
+          "text": "Must include Llama license terms when distributing to third parties"
+        }
+      ],
+      "restricted_uses": ["weapons", "surveillance", "critical_infrastructure", "generating_illegal_content"],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "same_license_required",
+      "attribution_required": true,
+      "models": ["meta-llama/Llama-2-*", "meta-llama/Meta-Llama-3-*", "meta-llama/Llama-3.*"],
+      "notes": "Commercial use allowed under 700M MAU. Products/services using Llama must display 'Built with Meta Llama' attribution."
+    },
+    {
+      "id": "llama-3.1-community",
+      "name": "Llama 3.1 Community License Agreement",
+      "url": "https://ai.meta.com/llama/license/",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "mau_limit",
+          "value": 700000000,
+          "action": "requires_separate_license"
+        },
+        {
+          "type": "attribution",
+          "required": true,
+          "text": "Built with Meta Llama 3.1"
+        },
+        {
+          "type": "naming",
+          "restriction": "Cannot use 'Llama' in product name without written permission"
+        },
+        {
+          "type": "pass_through",
+          "required": true,
+          "text": "Must pass through usage restrictions to downstream users"
+        }
+      ],
+      "restricted_uses": ["weapons", "surveillance", "critical_infrastructure", "generating_illegal_content", "child_exploitation", "deception"],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "same_license_required",
+      "attribution_required": true,
+      "models": ["meta-llama/Llama-3.1-*", "meta-llama/Llama-3.2-*", "meta-llama/Llama-3.3-*", "meta-llama/Llama-4-*"],
+      "notes": "Applies to Llama 3.1+. Same MAU limit as earlier versions. Extended restricted uses list."
+    },
+    {
+      "id": "gemma-terms",
+      "name": "Gemma Terms of Use",
+      "url": "https://ai.google.dev/gemma/terms",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "pass_through",
+          "required": true,
+          "text": "Must pass through all usage restrictions to downstream users and developers"
+        },
+        {
+          "type": "attribution",
+          "required": true,
+          "text": "Must include 'Built with Gemma' in product documentation"
+        }
+      ],
+      "restricted_uses": ["weapons", "surveillance", "generating_illegal_content", "medical_diagnosis", "legal_advice", "financial_advice", "child_exploitation", "harassment"],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "same_license_required",
+      "attribution_required": true,
+      "models": ["google/gemma-*", "google/codegemma-*", "google/recurrentgemma-*"],
+      "notes": "Google's terms. Commercial use allowed but with pass-through obligations and restricted use categories."
+    },
+    {
+      "id": "mistral-research",
+      "name": "Mistral AI Research License",
+      "url": "https://mistral.ai/licenses/MRL-0.1.md",
+      "commercial": false,
+      "commercial_conditions": [],
+      "restricted_uses": [],
+      "saas_allowed": false,
+      "research_only": true,
+      "derivative_distribution": "same_license_required",
+      "attribution_required": true,
+      "models": ["mistralai/Mistral-Large-*"],
+      "notes": "Research only. No commercial use without separate agreement."
+    },
+    {
+      "id": "openrail-m",
+      "name": "OpenRAIL-M License",
+      "url": "https://www.licenses.ai/blog/2022/8/18/naming-convention-of-responsible-ai-licenses",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "pass_through",
+          "required": true,
+          "text": "Must include use-based restrictions in any redistribution"
+        }
+      ],
+      "restricted_uses": ["weapons", "surveillance", "deception", "discrimination", "generating_illegal_content", "child_exploitation", "harassment"],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "same_license_required",
+      "attribution_required": true,
+      "models": ["stabilityai/stable-diffusion-*", "runwayml/stable-diffusion-*"],
+      "notes": "Responsible AI License for models. Combines open access with behavioral use restrictions."
+    },
+    {
+      "id": "openrail-s",
+      "name": "OpenRAIL-S License",
+      "url": "https://www.licenses.ai/blog/2022/8/18/naming-convention-of-responsible-ai-licenses",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "pass_through",
+          "required": true,
+          "text": "Must include use-based restrictions when providing access as a service"
+        }
+      ],
+      "restricted_uses": ["weapons", "surveillance", "deception", "discrimination", "generating_illegal_content"],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "same_license_required",
+      "attribution_required": true,
+      "models": [],
+      "notes": "Responsible AI License for source code. Similar to OpenRAIL-M but for software."
+    },
+    {
+      "id": "cc-by-4.0",
+      "name": "Creative Commons Attribution 4.0 International",
+      "spdx": "CC-BY-4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "attribution",
+          "required": true,
+          "text": "Must give appropriate credit, provide link to license, indicate changes"
+        }
+      ],
+      "restricted_uses": [],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "permissive",
+      "attribution_required": true,
+      "models": [],
+      "notes": "Permissive CC license. Must attribute but allows commercial use."
+    },
+    {
+      "id": "cc-by-nc-4.0",
+      "name": "Creative Commons Attribution-NonCommercial 4.0 International",
+      "spdx": "CC-BY-NC-4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "commercial": false,
+      "commercial_conditions": [],
+      "restricted_uses": ["commercial_use"],
+      "saas_allowed": false,
+      "research_only": false,
+      "derivative_distribution": "permissive",
+      "attribution_required": true,
+      "models": [],
+      "notes": "Non-commercial only. Cannot be used in commercial products or services."
+    },
+    {
+      "id": "cc-by-sa-4.0",
+      "name": "Creative Commons Attribution-ShareAlike 4.0 International",
+      "spdx": "CC-BY-SA-4.0",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "attribution",
+          "required": true,
+          "text": "Must give appropriate credit and distribute under same license"
+        }
+      ],
+      "restricted_uses": [],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "same_license_required",
+      "attribution_required": true,
+      "models": [],
+      "notes": "Copyleft CC license. Derivatives must use same license."
+    },
+    {
+      "id": "tongyi-qianwen",
+      "name": "Tongyi Qianwen License Agreement",
+      "url": "https://github.com/QwenLM/Qwen/blob/main/Tongyi%20Qianwen%20LICENSE%20AGREEMENT",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "mau_limit",
+          "value": 100000000,
+          "action": "requires_written_approval"
+        },
+        {
+          "type": "pass_through",
+          "required": true,
+          "text": "Must ensure downstream users comply with the license agreement"
+        }
+      ],
+      "restricted_uses": ["weapons", "child_exploitation", "generating_illegal_content", "discrimination"],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "same_license_required",
+      "attribution_required": true,
+      "models": ["Qwen/Qwen-*", "Qwen/Qwen1.5-*", "Qwen/Qwen2-*", "Qwen/Qwen2.5-*"],
+      "notes": "Alibaba's license. Commercial use allowed under 100M MAU. Requires approval for larger deployments."
+    },
+    {
+      "id": "deepseek-license",
+      "name": "DeepSeek License Agreement",
+      "url": "https://github.com/deepseek-ai/DeepSeek-LLM/blob/main/LICENSE-MODEL",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "pass_through",
+          "required": true,
+          "text": "Must pass through usage restrictions to all downstream users"
+        },
+        {
+          "type": "attribution",
+          "required": true,
+          "text": "Must clearly indicate model is based on DeepSeek"
+        }
+      ],
+      "restricted_uses": ["weapons", "child_exploitation", "generating_illegal_content", "surveillance", "deception", "discrimination"],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "same_license_required",
+      "attribution_required": true,
+      "models": ["deepseek-ai/deepseek-llm-*", "deepseek-ai/deepseek-coder-*", "deepseek-ai/DeepSeek-V2*", "deepseek-ai/DeepSeek-V3*", "deepseek-ai/DeepSeek-R1*"],
+      "notes": "DeepSeek's custom license. Commercial use allowed with pass-through obligations."
+    },
+    {
+      "id": "falcon-license",
+      "name": "Falcon LLM License",
+      "url": "https://falconllm.tii.ae/falcon-terms-and-conditions.html",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "attribution",
+          "required": true,
+          "text": "Must acknowledge use of Falcon in publications and products"
+        },
+        {
+          "type": "revenue_limit",
+          "value": 1000000,
+          "action": "royalty_required"
+        }
+      ],
+      "restricted_uses": ["weapons", "surveillance", "generating_illegal_content"],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "permissive",
+      "attribution_required": true,
+      "models": ["tiiuae/falcon-*", "tiiuae/Falcon-*"],
+      "notes": "TII license. Free for commercial use under $1M revenue; royalty above."
+    },
+    {
+      "id": "proprietary-api",
+      "name": "Proprietary API (Check Provider ToS)",
+      "commercial": true,
+      "commercial_conditions": [],
+      "restricted_uses": [],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "permissive",
+      "attribution_required": false,
+      "models": ["openai/*", "anthropic/*", "google/*", "cohere/*"],
+      "notes": "Proprietary API. Check provider's Terms of Service for specific restrictions. Output ownership varies by provider."
+    },
+    {
+      "id": "bigscience-bloom-rail",
+      "name": "BigScience BLOOM RAIL 1.0",
+      "url": "https://bigscience.huggingface.co/blog/the-bigscience-rail-license",
+      "commercial": true,
+      "commercial_conditions": [
+        {
+          "type": "pass_through",
+          "required": true,
+          "text": "Must include use-based restrictions and license with any distribution"
+        }
+      ],
+      "restricted_uses": ["weapons", "surveillance", "deception", "discrimination", "generating_illegal_content", "medical_diagnosis"],
+      "saas_allowed": true,
+      "research_only": false,
+      "derivative_distribution": "same_license_required",
+      "attribution_required": true,
+      "models": ["bigscience/bloom-*", "bigscience/bloomz-*"],
+      "notes": "BigScience Responsible AI License. Similar to OpenRAIL-M with BLOOM-specific terms."
+    }
+  ]
+}

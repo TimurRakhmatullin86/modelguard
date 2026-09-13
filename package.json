@@ -1,0 +1,39 @@
+{
+  "name": "modelguard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI model license compliance scanner — CLI + Web Dashboard",
+  "workspaces": [
+    "packages/shared",
+    "packages/cli",
+    "packages/web"
+  ],
+  "scripts": {
+    "build": "npm run build:shared && npm run build:cli && npm run build:web",
+    "build:shared": "cd packages/shared && npm run build",
+    "build:cli": "cd packages/cli && npm run build",
+    "build:web": "cd packages/web && npm run build",
+    "dev:web": "cd packages/web && npm run dev",
+    "dev:cli": "cd packages/cli && npm run dev",
+    "scan": "node packages/cli/dist/index.js scan",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": [
+    "ai",
+    "model",
+    "license",
+    "compliance",
+    "audit",
+    "llama",
+    "gemma",
+    "huggingface",
+    "open-source",
+    "scanner"
+  ],
+  "author": "Timur Rakhmatullin",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timurrakhmatullin/modelguard"
+  }
+}
