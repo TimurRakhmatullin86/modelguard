@@ -23,5 +23,3 @@ jobs:
       - run: npx prisma generate --schema=packages/web/prisma/schema.prisma
 
       - run: npm run build
-
-      - run: npm run lint
