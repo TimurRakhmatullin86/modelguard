@@ -6,29 +6,20 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  CARGO_TERM_COLOR: always
-
 jobs:
-  ci:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
         with:
-          components: rustfmt, clippy
+          node-version: "20"
+          cache: "npm"
 
-      - uses: Swatinem/rust-cache@v2
+      - run: npm ci
 
-      - name: Check formatting
-        run: cargo fmt --check
+      - run: npm run lint
 
-      - name: Clippy
-        run: cargo clippy -- -D warnings
-
-      - name: Run tests
-        run: cargo test
-
-      - name: Build release
-        run: cargo build --release
+      - run: npm run build
